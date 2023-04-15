@@ -1,9 +1,11 @@
+import 'package:chat/helpers/show_alert.dart';
+import 'package:chat/services/auth_service.dart';
 import 'package:chat/widgets/blue_button.dart';
 import 'package:chat/widgets/custom_input.dart';
 import 'package:chat/widgets/labels.dart';
 import 'package:chat/widgets/logo.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
 
@@ -51,6 +53,9 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>( context );
+
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -74,9 +79,18 @@ class __FormState extends State<_Form> {
             isPassword: true,
           ),
           BlueButton(
-            textButton: 'Login',
-            onPressed: () {
-              print(emailCtrl.text);
+            textButton: 'Create account',
+            onPressed: authService.authenticating ? null : () async {
+
+              FocusScope.of(context).unfocus();
+              final registerOk = await authService.register(nameCtrl.text.trim(), emailCtrl.text.trim(), pwdCtrl.text.trim());
+
+              if ( registerOk == true && context.mounted ) {
+                Navigator.pushReplacementNamed(context, 'users');
+              } else {
+                showAlert( context, 'Incorrect register', registerOk );
+              }
+
             })
           
         ],

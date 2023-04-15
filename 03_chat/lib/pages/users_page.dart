@@ -1,5 +1,7 @@
 import 'package:chat/models/user.dart';
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
@@ -22,14 +24,22 @@ class _UsersPageState extends State<UsersPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+    final user = authService.user;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('My name', style: TextStyle( color: Colors.black87 )),
+        title: Text(user.name, style: TextStyle( color: Colors.black87 )),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon( Icons.exit_to_app, color: Colors.black87  ),
-          onPressed: () {},
+          onPressed: () {
+            // TODO: Disconnect from socket server
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthService.deleteToken();
+          },
         ),
         actions: [
           Container(
