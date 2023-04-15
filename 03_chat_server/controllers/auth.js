@@ -83,11 +83,11 @@ const renewToken = async( req, res = response ) => {
         const { uid } = req;
         const token = await generateJWT( uid )
 
-        const userDB = await User.findById( uid );
+        const user = await User.findById( uid );
 
         res.json({ 
             ok: true, 
-            userDB,
+            user,
             token
         })
     } catch (error) {
