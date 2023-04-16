@@ -9,12 +9,14 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
+    
     User({
         required this.name,
         required this.email,
         required this.online,
         required this.uid,
     });
+
 
     String name;
     String email;

@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService with ChangeNotifier {
 
-  late User user;
+  User? user;
   bool _authenticating = false;
 
   // Create storage
@@ -97,7 +97,8 @@ class AuthService with ChangeNotifier {
     final token  = await _storage.read( key: 'token' );
 
     final uri = Uri.parse('${ Environment.apiUrl }/login/renew');
-    final resp = await http.get( uri, headers: { 'Content-Type' : 'application/json', 'x-token' : token as String } );
+    
+    final resp = await http.get( uri, headers: { 'Content-Type' : 'application/json', 'x-token' : token.toString() } );
 
     if ( resp.statusCode == 200 ) {
       final loginResponse = loginResponseFromJson( resp.body );
