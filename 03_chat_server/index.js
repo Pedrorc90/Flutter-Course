@@ -25,6 +25,8 @@ app.use( express.static(publicPah));
 
 // Routes
 app.use( '/api/login', require('./routes/auth') )
+app.use( '/api/users', require('./routes/users') )
+app.use( '/api/messages', require('./routes/messages') )
 
 // We can listen whatever request to port 3000
 server.listen( process.env.PORT, ( err ) => {
